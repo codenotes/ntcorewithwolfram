@@ -7,6 +7,7 @@
 //list all entries
 //std::vector<EntryInfo> GetEntryInfo(StringRef prefix, unsigned int types);
 using namespace std;
+using namespace nt;
 
 void list()
 {
@@ -18,6 +19,28 @@ void list()
 		cout << "***"<<e.name << std::endl;
 
 	}
+	cout << "---------" << endl;
+
+}
+/*
+std::function<void(unsigned int uid, StringRef name,
+	std::shared_ptr<Value> value,
+	*///unsigned int flags)
+
+void cb(unsigned int uid, StringRef name,
+		std::shared_ptr<Value> value,
+		unsigned int flags)
+{
+	cout << "name:" << name << " value:" << value << endl;
+}
+
+
+
+void monitor()
+{
+	list();
+	while (1)
+		std::this_thread::sleep_for(std::chrono::seconds(2));
 }
 
 int main() {
@@ -30,8 +53,31 @@ int main() {
       0);
   nt::StartClient("127.0.0.1", 10000);
   std::this_thread::sleep_for(std::chrono::seconds(2));
+ 
+  StringRef pre;
 
-  list();
+  //EntryListenerCallback
+
+  /** NetworkTables notififier kinds. */
+  //enum NT_NotifyKind {
+	 // NT_NOTIFY_NONE = 0,
+	 // NT_NOTIFY_IMMEDIATE = 0x01, /* initial listener addition */
+	 // NT_NOTIFY_LOCAL = 0x02,     /* changed locally */
+	 // NT_NOTIFY_NEW = 0x04,       /* newly created entry */
+	 // NT_NOTIFY_DELETE = 0x08,    /* deleted */
+	 // NT_NOTIFY_UPDATE = 0x10,    /* value changed */
+	 // NT_NOTIFY_FLAGS = 0x20      /* flags changed */
+  //};
+
+  AddEntryListener(pre, cb, NT_NOTIFY_IMMEDIATE| NT_NOTIFY_NEW| NT_NOTIFY_UPDATE);
+
+
+  thread t1(monitor);
+
+  t1.join();
+  
+
+
 
   return 0;
 

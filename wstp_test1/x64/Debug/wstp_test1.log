@@ -1,2 +1,3 @@
 ﻿  wstp_test1.cpp
+cl : Command line warning D9028: minimal rebuild failure, reverting to normal build
   wstp_test1.vcxproj -> C:\repos\ntcore\build\x64\Debug\wstp_test1.exe
